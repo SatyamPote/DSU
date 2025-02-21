@@ -1,0 +1,71 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Library</title>
+    <link rel="stylesheet" href="{% static 'Library.css' %}">
+    <script src="https://kit.fontawesome.com/da1d489c94.js" crossorigin="anonymous"></script>
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav>
+        <span>Codestack</span>
+        <ul>
+            <li><a href="{% url 'home' %}">Home</a></li>
+            <li><a href="{% url 'Library' %}">Library</a></li>
+            <li><a href="{% url 'Subscription' %}">Subscription</a></li>
+            <li><a href="{% url 'Collection' %}">Collection</a></li>
+            <li><a href="{% url 'Support' %}">Support</a></li>
+        </ul>
+        <div class="profile">
+            <i class="fa-solid fa-user"></i>
+                <a href="{% url 'update_profile' user.id %}">Profile</a>
+
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <div class="center-text">
+            <h1>Welcome to our Library</h1>
+            <p class="description">Explore our curated collection of books and resources. Find something that sparks your interest!</p>
+        </div>
+
+        <!-- Product Section -->
+        <div class="product-container">
+            <!-- Loop through products -->
+            {% for product in products %}
+            <div class="card">
+                <div class="image_container">
+                    <img src="{{ product.image.url }}" alt="{{ product.title }}" class="image">
+                </div>
+                <div class="title">
+                    <span>{{ product.title }}</span>
+                </div>
+                <div class="price">
+                    <span>${{ product.price }}</span>
+                </div>
+                <div class="description">
+                    <p> {{ product.description }}</p>
+                </div>
+                <div class="actions">
+                    <button class="Btn">
+                        Buy
+                        <svg class="svgIcon" viewBox="0 0 576 512"><path d="M512 80c8.8 0 16 7.2 16 16v32H48V96c0-8.8 7.2-16 16-16H512zm16 144V416c0 8.8-7.2 16-16 16H64c-8.8 0-16-7.2-16-16V224H528zM64 32C28.7 32 0 60.7 0 96V416c0 35.3 28.7 64 64 64H512c35.3 0 64-28.7 64-64V96c0-35.3-28.7-64-64-64H64zm56 304c-13.3 0-24 10.7-24 24s10.7 24 24 24h48c13.3 0 24-10.7 24-24s-10.7-24-24-24H120zm128 0c-13.3 0-24 10.7-24 24s10.7 24 24 24H360c13.3 0 24-10.7 24-24s-10.7-24-24-24H248z"></path></svg>
+                    </button>
+                </div>
+            </div>
+            {% endfor %}
+            <!-- End of Product Cards -->
+        </div>
+        <!-- End of Product Section -->
+    </div>
+    <!-- End of Main Content -->
+</body>
+
+
+{% include 'footer.html' %}
+
+</html>

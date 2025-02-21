@@ -1,0 +1,108 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pricing Page</title>
+  <link rel="stylesheet" href="{% static 'Subscription.css' %}">
+  <script src="https://kit.fontawesome.com/da1d489c94.js" crossorigin="anonymous"></script>
+</head>
+<body>
+  <nav>
+    <span>Codestack</span>
+    <ul>
+      <li><a href="{% url 'home' %}">Home</a></li>
+      <li><a href="{% url 'Library' %}">Library</a></li>
+      <li><a href="{% url 'Subscription' %}">Subscription</a></li>
+      <li><a href="{% url 'Collection' %}">Collection</a></li>
+      <li><a href="{% url 'Support' %}">Support</a></li>
+    </ul>
+    <div class="profile">
+      {% if user.is_authenticated %}
+      <i class="fa-solid fa-user"></i>
+      <a href="{% url 'update_profile' user.id %}">Profile</a>
+
+      {% else %}
+        <a href="{% url 'login' %}">Login</a>
+      {% endif %}
+    </div>
+  </nav>
+
+
+
+
+
+  <div class="main__heading">Choose your Plan</div>
+  <div class="cards">
+    <div class="card">
+      <p class="card__heading">Free Plan</p>
+      <p class="card__price">$0/month</p>
+      <ul class="card_bullets flow" role="list">
+        <li>Access to all features</li>
+        <li>Unlimited storage</li>
+        <li>No ads</li>
+      </ul>
+      <a class="card__cta cta" href="#basic">Get Started</a>
+    </div>
+    <div class="card">
+      <p class="card__heading">Standard Plan</p>
+      <p class="card__price">$10/month</p>
+      <ul class="card_bullets flow" role="list">
+        <li>Access to all features</li>
+        <li>Access to Collection</li>
+        <li>Unlimited storage</li>
+        <li>No ads</li>
+      </ul>
+      <a class="card__cta cta" href="#standard">Get Started</a>
+    </div>
+    <div class="card">
+      <p class="card__heading">Premium Plan</p>
+      <p class="card__price">$20/month</p>
+      <ul class="card_bullets flow" role="list">
+        <li>Access to all features</li>
+        <li>Access to Collection</li>
+        <li>Unlimited storage</li>
+        <li>No ads</li>
+        <li>Priority support</li>
+        <li>Exclusive content</li>
+      </ul>
+      <a class="card__cta cta" href="#premium">Get Started</a>
+    </div>
+  </div>
+</body>
+
+
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+
+
+<secion>
+  <div class="section-description">
+    <cite>
+    <h2><center>Explore Our Vast Collection</center></h2>
+  </cite>
+    <p><center><bold>Explore our subscription plans offering essential, standard, and premium options tailored to enhance your programming skills with features like unlimited storage, priority support, and exclusive content at Codestack.</bold></center></p>
+</div>
+</section>
+
+
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+
+{% include 'footer.html' %}
+
+
+</html>
