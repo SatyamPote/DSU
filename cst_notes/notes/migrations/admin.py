@@ -3,5 +3,6 @@ from .models import Note
 
 @admin.register(Note)
 class NoteAdmin(admin.ModelAdmin):
-    list_display = ('title', 'subject', 'uploaded_at')
-    list_filter = ('subject',)
+    list_display = ('title', 'category', 'uploaded_by', 'upload_date')
+    search_fields = ('title', 'uploaded_by')
+    list_filter = ('category', 'upload_date')
