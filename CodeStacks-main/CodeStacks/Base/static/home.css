@@ -8,13 +8,13 @@
 body {
     font-family: Arial, sans-serif;
     line-height: 1.6;
-    background-color: #f0f0f0;
-    color: #333;
+    background-color: #ffffff;
+    color: #000000;
 }
 
 /* Navbar Styles */
 nav {
-    background-color: #333;
+    background-color: #000000;
     color: white;
     padding: 10px;
     display: flex;
