@@ -1,0 +1,47 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Update Profile - Codestack</title>
+    <link rel="stylesheet" href="{% static 'update_profile.css' %}">
+</head>
+<body>
+    <nav>
+        <span>Codestack</span>
+        <ul>
+            <li><a href="{% url 'home' %}">Home</a></li>
+            <li><a href="{% url 'Library' %}">Library</a></li>
+            <li><a href="{% url 'Subscription' %}">Subscription</a></li>
+            <li><a href="{% url 'Collection' %}">Collection</a></li>
+            <li><a href="{% url 'Support' %}">Support</a></li>
+        </ul>
+        <div class="profile">
+            {% if user.is_authenticated %}
+                <i class="fa-solid fa-user"></i>
+                <a href="{% url 'update_profile' user.id %}"></a>
+                <a href="{% url 'logout' %}">Logout</a>
+            {% else %}
+                <a href="{% url 'login' %}">Login</a>
+            {% endif %}
+        </div>
+    </nav>
+    <div class="update-profile-container">
+        <div class="centered-content">
+            <h2>Update Profile</h2>
+            {% if error %}
+                <div class="error">{{ error }}</div>
+            {% endif %}
+            <form action="{% url 'update_profile' user.id %}" method="post">
+                {% csrf_token %}
+
+                <input type="password" name="current_password" placeholder="Current Password">
+                <input type="password" name="new_password1" placeholder="New Password">
+                <input type="password" name="new_password2" placeholder="Confirm New Password">
+                <input type="submit" value="Update">
+            </form>
+        </div>
+    </div>
+</body>
+</html>
