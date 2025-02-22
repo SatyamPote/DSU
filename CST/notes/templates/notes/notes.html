@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Notes</title>
+</head>
+<body>
+    <h1>List of Notes</h1>
+
+    <form method="get" action="{% url 'notes' %}">
+        <input type="text" name="q" placeholder="Search notes..." value="{{ query|default:'' }}">
+        <button type="submit">Search</button>
+    </form>
+
+    <ul>
+        {% for note in notes %}
+            <li>
+                {{ note.title }} - Category: {{ note.category }} -
+                Tags: {% for tag in note.tags.all %} {{ tag.name }} {% endfor %} -
+                Uploaded by: {{ note.uploaded_by }} -
+                Downloads: {{ note.download_count }} -
+                <a href="{% url 'download_note' note.id %}">Download</a>
+            </li>
+        {% empty %}
+            <li>No notes found.</li>
+        {% endfor %}
+    </ul>
+
+    <a href="{% url 'home' %}">Back to Home</a>
+    {% if user.is_authenticated %}
+        <a href="{% url 'note_upload' %}">Upload Note</a>
+    {% endif %}
+</body>
+</html>
