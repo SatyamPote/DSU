@@ -7,6 +7,7 @@ import re  # Import the regular expression module
 import wikipedia  # Import the wikipedia library
 from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib.auth.decorators import login_required
+from django.shortcuts import render, redirect, get_object_or_404
 
 from .models import Note
 from .forms import NoteForm
