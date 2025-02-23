@@ -1,15 +1,171 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Upload Note</title>
+    <style>
+        @font-face {
+            font-family: 'Geist Sans';
+            src: url('/static/fonts/Geist-Regular.woff2') format('woff2');
+        }
+        @font-face {
+            font-family: 'Geist Mono';
+            src: url('CST/notes/static/fonts/GeistMono-Regular.woff2') format('woff2');
+        }
+        /* General Styles */
+        body {
+            background-color: #000; /* Black background */
+            color: white;
+            font-family: 'Geist', sans-serif;
+            font-weight: 700;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        /* Form Container */
+        .form-container {
+            width: 500px;
+            background: linear-gradient(#000, #000) padding-box,
+                        linear-gradient(145deg, #e469ae, #369cdd, #a06076, #6c8e40, #d18838, #744b54, #515395) border-box;
+            border: 2px solid transparent;
+            padding: 20px 10px;
+            font-size: 14px;
+            border-radius: 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            box-sizing: border-box;
+            background-size: 200% 100%;
+            animation: gradient 5s ease infinite;
+        }
+
+        @keyframes gradient {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .form-container .form {
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+        }
+
+        /* Form Inputs */
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 13px;
+            padding-left: 1vh;
+            padding-right: 6vh;
+        }
+
+        .form-group label {
+            font-weight: 600;
+            font-size: 12px;
+            color: #e469ae; /* Light pinkish text for labels */
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px 16px;
+            border-radius: 8px;
+            border: 1px solid #369cdd; /* Light blue border */
+            background-color: transparent;
+            color: white;
+            font-size: 14px;
+        }
+
+        .form-group textarea {
+            resize: none;
+            height: 100px;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #d18838; /* Orange accent on focus */
+            box-shadow: 0px 0px 8px #d18838;
+        }
+
+        /* Gradient Button */
+        .form-submit-btn {
+            background: linear-gradient(45deg, #e469ae, #369cdd, #d18838, #515395);
+            border: none;
+            color: white;
+            padding: 12px 16px;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .form-submit-btn:hover {
+            filter: brightness(1.2);
+            transform: scale(1.05);
+        }
+
+        .form-submit-btn:active {
+            transform: scale(0.95);
+        }
+
+        /* Back to Notes Link */
+        .back-link {
+            display: block;
+            text-align: center;
+            margin-top: 10px;
+            color: #703fc0; /* Greenish accent */
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .back-link:hover {
+            text-decoration: underline;
+        }
+    </style>
 </head>
 <body>
-    <h1>Upload a New Note</h1>
-    <form method="post" enctype="multipart/form-data">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Upload</button>
-    </form>
-    <a href="{% url 'notes' %}">Back to Notes</a>
+
+    <div class="form-container">
+        <h2 style="text-align: center; color: #e469ae;">Upload a New Note</h2>
+        <form method="post" enctype="multipart/form-data" class="form">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="title">Title</label>
+                <input type="text" id="title" name="title" required>
+            </div>
+
+            <div class="form-group">
+                <label for="file">Upload File</label>
+                <input type="file" id="file" name="file" required>
+            </div>
+
+            <div class="form-group">
+                <label for="category">Category</label>
+                <select id="category" name="category" required style="background-color: #000;">
+                    <option value="" disabled selected>Select Category</option>
+                    <option value="Lecture Notes">Lecture Notes</option>
+                    <option value="Assignments">Assignments</option>
+                    <option value="Exams">Exams</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="tags">Tags (Comma separated)</label>
+                <input type="text" id="tags" name="tags">
+            </div>
+
+            <button type="submit" class="form-submit-btn">Upload</button>
+        </form>
+
+        <a href="{% url 'notes' %}" class="back-link">Back to Notes</a>
+    </div>
+
 </body>
 </html>
