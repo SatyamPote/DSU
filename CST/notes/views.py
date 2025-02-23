@@ -4,6 +4,8 @@ from .forms import NoteForm
 from django.db.models import Q
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth import logout
+from django.contrib.auth import login
 
 def home(request):
     return render(request, 'notes/home.html')
@@ -50,3 +52,12 @@ def register(request):
 
 def redirect_to_admin(request):
     return redirect('/admin/login/')
+
+def admin_login_redirect(request):
+    if request.user.is_authenticated:
+        return redirect('/')  # Redirect to home if logged in
+    return redirect('/admin/login/')  # Otherwise, go to admin login
+
+def custom_logout(request):
+    logout(request)  # Logs out the user
+    return redirect('/')  # Redirects to home after logout

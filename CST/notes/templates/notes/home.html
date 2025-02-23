@@ -128,9 +128,9 @@
                 {% if user.is_authenticated %}
                     <a href="{% url 'note_upload' %}" class="value">Upload Note</a>
                     <a href="{% url 'admin:index' %}" class="value">Admin Panel</a>
-                    <a href="{% url 'logout' %}" class="value">Logout</a>
+                    <a href="{% url 'custom_logout' %}" class="value">Logout</a>
                 {% else %}
-                <a href="{% url 'admin_login_redirect' %}" class="value">Login</a>
+                <a href="{% url 'admin:login' %}?next=/" class="value">Login</a>
                 <a href="{% url 'register' %}" class="value">Register</a>
                 {% endif %}
             </div>
