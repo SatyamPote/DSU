@@ -47,3 +47,6 @@ def register(request):
     else:
         form = UserCreationForm()
     return render(request, 'notes\templates\notes\registration\register.html', {'form': form})  # Updated template path
+
+def redirect_to_admin(request):
+    return redirect('/admin/login/')
