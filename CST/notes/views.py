@@ -1,17 +1,32 @@
-from django.shortcuts import render, redirect, get_object_or_404
-from .models import Note
-from .forms import NoteForm
-from django.db.models import Q
-from django.contrib.auth.decorators import login_required
+from django.shortcuts import render, redirect
+from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.forms import UserCreationForm
-from .forms import StaffLoginForm  # Import StaffLoginForm
+from django.urls import reverse
 from django.http import JsonResponse
-from django.contrib.auth import logout
 import re  # Import the regular expression module
 import wikipedia  # Import the wikipedia library
+from django.contrib.admin.views.decorators import staff_member_required
+from django.contrib.auth.decorators import login_required
+
+from .models import Note
+from .forms import NoteForm
 
 def home(request):
-    return render(request, 'home.html')
+    years = Note.YEAR_CHOICES
+    semesters = Note.SEMESTER_CHOICES
+    card_data = []
+
+    for year_choice in years:
+        for semester_choice in semesters:
+            notes = Note.objects.filter(year=year_choice[0], semester=semester_choice[0])[:3]  # Get the first 3 notes
+            card_data.append({
+                'year': year_choice,
+                'semester': semester_choice,
+                'notes': notes,
+            })
+
+    context = {'card_data': card_data}
+    return render(request, 'home.html', context)
 
 #@login_required  # Remove this line if you want everyone to see the notes
 def notes_list(request):
@@ -81,20 +96,7 @@ def notes_by_criteria(request):
     return render(request, 'notes/notes_by_criteria.html', {'notes': notes, 'year': year, 'semester': semester})
 
 def staff_login(request):
-    if request.method == 'POST':
-        form = StaffLoginForm(request, data=request.POST)
-        if form.is_valid():
-            user = form.get_user()
-            if user.is_staff:  # Check if the user is a staff member
-                login(request, user)
-                return redirect('notes')  # Redirect staff to notes list
-            else:
-                form.add_error(None, "Invalid staff credentials.")
-        else:
-            return render(request, 'registration/staff_login.html', {'form': form})
-    else:
-        form = StaffLoginForm()
-    return render(request, 'registration/staff_login.html', {'form': form})
+    return redirect('admin:login')  # Redirect to admin login page
 
 def get_subjects(request):
     year = request.GET.get('year')
