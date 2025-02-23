@@ -1,18 +1,151 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Home</title>
+    <style>
+        /* Import Geist Fonts */
+        @font-face {
+            font-family: 'Geist Sans';
+            src: url('path-to-your-fonts/GeistSans-Regular.woff2') format('woff2');
+        }
+        @font-face {
+            font-family: 'Geist Mono';
+            src: url('path-to-your-fonts/GeistMono-Regular.woff2') format('woff2');
+        }
+
+        /* General Styles */
+        body {
+            font-family: 'Geist Mono', monospace;
+            margin: 0;
+            padding: 0;
+            background-color: black; /* Fallback */
+            color: white;
+        }
+
+        /* Header */
+        header {
+            display: flex;
+            align-items: center;
+            background-color: #1a1a1a;
+            padding: 10px 20px;
+        }
+        header h1 {
+            font-family: 'Geist Sans', sans-serif;
+            font-size: 2.5em;
+            margin: 0;
+            white-space: nowrap;
+            overflow: hidden;
+            border-right: 0.15em solid white;
+            animation: typing 3.5s steps(40, end), blink-caret 0.75s step-end infinite;
+        }
+
+        /* Navigation */
+        nav {
+            margin-left: auto;
+        }
+        nav .input {
+            display: flex;
+            gap: 15px;
+        }
+        nav .value {
+            background-color: transparent;
+            border: none;
+            padding: 10px;
+            color: white;
+            text-decoration: none;
+            font-size: 1.2em;
+            cursor: pointer;
+            border-radius: 4px;
+            transition: background-color 0.3s;
+        }
+        nav .value:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+
+        /* Gradient Hero Section */
+        .hero {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            text-align: center;
+            background: black url('media/images/gradient-hero-prerender.avif') no-repeat center center/cover;
+        }
+        .hero h1 {
+            font-family: 'Geist Sans', sans-serif;
+            font-size: 4em;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        .hero p {
+            font-size: 1.2em;
+            max-width: 600px;
+            opacity: 0.9;
+        }
+
+        /* Button Styles */
+        .btn {
+            padding: 12px 24px;
+            font-size: 1.2em;
+            color: black;
+            background-color: white;
+            border: none;
+            border-radius: 8px;
+            text-decoration: none;
+            cursor: pointer;
+            margin: 10px;
+            font-weight: bold;
+            transition: background 0.3s ease, transform 0.2s ease;
+        }
+        .btn:hover {
+            background-color: #f5f5f5;
+            transform: scale(1.05);
+        }
+
+        /* Typing Animation */
+        @keyframes typing {
+            from { width: 0; }
+            to { width: 12%; }
+        }
+        @keyframes blink-caret {
+            from, to { border-color: transparent; }
+            50% { border-color: white; }
+        }
+    </style>
 </head>
 <body>
-    <h1>Welcome to the CST Notes Website!</h1>
-    <a href="{% url 'notes' %}">View Notes</a>
-    {% if user.is_authenticated %}
-        <a href="{% url 'note_upload' %}">Upload Note</a>
-        <a href="{% url 'admin:index' %}">Admin Panel</a>
-        <a href="{% url 'logout' %}">Logout</a>
-    {% else %}
-        <a href="{% url 'login' %}">Login</a>
-        <a href="{% url 'register' %}">Register</a>
-    {% endif %}
+
+    <header>
+        <h1>CST Notes</h1>
+        <nav>
+            <div class="input">
+                <a href="{% url 'notes' %}" class="value">View Notes</a>
+                {% if user.is_authenticated %}
+                    <a href="{% url 'note_upload' %}" class="value">Upload Note</a>
+                    <a href="{% url 'admin:index' %}" class="value">Admin Panel</a>
+                    <a href="{% url 'logout' %}" class="value">Logout</a>
+                {% else %}
+                    <a href="{% url 'login' %}" class="value">Login</a>
+                    <a href="{% url 'register' %}" class="value">Register</a>
+                {% endif %}
+            </div>
+        </nav>
+    </header>
+
+    <!-- Gradient Background Hero Section -->
+    <section class="hero">
+        <h1>Where Knowledge Meets Simplicity!</h1>
+        <p>Built to make you extraordinarily productive. <br>CST Notes is the best way to manage your study materials.</p>
+        <a href="{% url 'notes' %}" class="btn">View Notes</a>
+        {% if user.is_authenticated %}
+            <a href="{% url 'note_upload' %}" class="btn">Upload Note</a>
+        {% else %}
+            <a href="{% url 'register' %}" class="btn">Register</a>
+        {% endif %}
+    </section>
+
 </body>
 </html>
