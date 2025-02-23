@@ -1,33 +1,44 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Notes</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/notes.css' %}">
 </head>
 <body>
-    <h1>List of Notes</h1>
+    <div class="container">
+        <h1>List of Notes</h1>
 
-    <form method="get" action="{% url 'notes' %}">
-        <input type="text" name="q" placeholder="Search notes..." value="{{ query|default:'' }}">
-        <button type="submit">Search</button>
-    </form>
+        <form method="get" action="{% url 'notes' %}" class="search-form">
+            <input type="text" name="q" placeholder="Search notes..." value="{{ query|default:'' }}">
+            <button type="submit">Search</button>
+        </form>
 
-    <ul>
-        {% for note in notes %}
-            <li>
-                {{ note.title }} - Category: {{ note.category }} -
-                Tags: {% for tag in note.tags.all %} {{ tag.name }} {% endfor %} -
-                Uploaded by: {{ note.uploaded_by }} -
-                Downloads: {{ note.download_count }} -
-                <a href="{% url 'download_note' note.id %}">Download</a>
-            </li>
-        {% empty %}
-            <li>No notes found.</li>
-        {% endfor %}
-    </ul>
+        <div class="notes-grid">
+            {% for note in notes %}
+            <div class="note-card">
+                <div class="card-content">
+                    <h2 class="note-title">{{ note.title }}</h2>
+                    <p class="note-category">Category: {{ note.category }}</p>
+                    <p class="note-tags">Tags: {% for tag in note.tags.all %} {{ tag.name }} {% endfor %}</p>
+                    <p class="uploaded-by">Uploaded by: {{ note.uploaded_by }}</p>
+                    <p class="download-count">Downloads: {{ note.download_count }}</p>
+                    <a href="{% url 'download_note' note.id %}" class="download-btn">Download</a>
+                </div>
+            </div>
+            {% empty %}
+            <p class="no-notes">No notes found.</p>
+            {% endfor %}
+        </div>
 
-    <a href="{% url 'home' %}">Back to Home</a>
-    {% if user.is_authenticated %}
-        <a href="{% url 'note_upload' %}">Upload Note</a>
-    {% endif %}
+        <div class="actions">
+            <a href="{% url 'home' %}" class="btn">Back to Home</a>
+            {% if user.is_authenticated %}
+                <a href="{% url 'note_upload' %}" class="btn upload-btn">Upload Note</a>
+            {% endif %}
+        </div>
+    </div>
 </body>
 </html>
