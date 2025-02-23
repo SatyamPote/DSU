@@ -7,23 +7,11 @@ from django.contrib.auth.forms import UserCreationForm
 from .forms import StaffLoginForm  # Import StaffLoginForm
 from django.http import JsonResponse
 from django.contrib.auth import logout
+import re  # Import the regular expression module
+import wikipedia  # Import the wikipedia library
 
 def home(request):
-    years = Note.YEAR_CHOICES
-    semesters = Note.SEMESTER_CHOICES
-    card_data = []
-
-    for year_choice in years:
-        for semester_choice in semesters:
-            notes = Note.objects.filter(year=year_choice[0], semester=semester_choice[0])[:3]  # Get the first 3 notes
-            card_data.append({
-                'year': year_choice,
-                'semester': semester_choice,
-                'notes': notes,
-            })
-
-    context = {'card_data': card_data}
-    return render(request, 'home.html', context)
+    return render(request, 'home.html')
 
 #@login_required  # Remove this line if you want everyone to see the notes
 def notes_list(request):
@@ -143,3 +131,52 @@ def get_subjects(request):
 def custom_logout(request):
     logout(request)
     return redirect('home')  # Redirect to the homepage after logout
+
+def chatbot(request):
+    if request.method == 'POST':
+        question = request.POST.get('question')
+        # Load all notes related to computer science
+        notes = Note.objects.filter(subject='cs')
+        context = ""
+        for note in notes:
+            # Extract text from the file
+            try:
+                file_content = note.file.read().decode('utf-8')
+                context += file_content + "\n"
+            except Exception as e:
+                context += f"Error reading file {note.title}: {e}"
+
+        # Search for the question in the context
+        answer = search_keyword(question, context)
+        if "I'm sorry" in answer:
+            try:
+                # Search Wikipedia with a more specific query
+                answer = wikipedia.summary(f"{question} computer science", sentences=3)
+            except wikipedia.exceptions.PageError:
+                answer = "I'm sorry, I couldn't find information about that topic on Wikipedia either."
+            except wikipedia.exceptions.DisambiguationError as e:
+                answer = f"I found multiple pages for that query. Can you be more specific? {e.options}"
+        return render(request, 'chatbot.html', {'question': question, 'answer': answer})
+    return render(request, 'chatbot.html')
+
+def search_keyword(keyword, context, num_sentences=3):
+    # Split the context into sentences
+    sentences = re.split(r'(?<!\w\.\w.)(?<![A-Z][a-z]\.)(?<=\.|\?)\s', context)
+    # Find sentences that contain the keyword
+    relevant_sentences = [s for s in sentences if keyword.lower() in s.lower()]
+    if relevant_sentences:
+        # Get the index of the first relevant sentence
+        first_index = sentences.index(relevant_sentences[0])
+        # Get a few sentences before and after the first relevant sentence
+        start_index = max(0, first_index - num_sentences // 2)
+        end_index = min(len(sentences), first_index + num_sentences // 2 + 1)
+        # Combine the sentences
+        answer = " ".join(sentences[start_index:end_index])
+        # Format the answer with points
+        formatted_answer = "<ul>"
+        for sentence in answer.split(". "):
+            formatted_answer += f"<li>{sentence}.</li>"
+        formatted_answer += "</ul>"
+        return formatted_answer
+    else:
+        return "I'm sorry, I couldn't find information about that topic in the notes."

@@ -3,151 +3,116 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home</title>
+    <title>CST Notes</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Tailwind CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/home.css' %}">
     <style>
-        /* Import Geist Fonts */
-
-        @font-face {
-            font-family: 'Geist Sans';
-            src: url('/static/fonts/Geist-Regular.woff2') format('woff2');
-        }
-        @font-face {
-            font-family: 'Geist Mono';
-            src: url('CST/notes/static/fonts/GeistMono-Regular.woff2') format('woff2');
-        }
-
-        /* General Styles */
         body {
-            font-family: 'Geist Mono', monospace;
-            margin: 0;
-            padding: 0;
-            background-color: black; /* Fallback */
             color: white;
+            background: linear-gradient(45deg, #e469ae, #369cdd, #d18838, #515395);
+            background-size: 400% 400%;
+            animation: gradient 15s ease infinite;
         }
 
-        /* Header */
-        header {
-            display: flex;
-            align-items: center;
-            background-color: #1a1a1a;
-            padding: 10px 15px;
-        }
-        header h1 {
-            font-family: 'Geist Sans', sans-serif;
-            font-size: 2.5em;
-            margin: 0;
-            white-space: nowrap;
-            overflow: hidden;
-            border-right: 0.1em solid white;
-            animation: typing 1s steps(40000), blink-caret 0.5s step-end infinite;
-            color: linear-gradient(45deg, #e469ae, #369cdd, #d18838, #515395);
-        }
-
-        /* Navigation */
-        nav {
-            margin-left: auto;
-        }
-        nav .input {
-            display: flex;
-            gap: 15px;
-        }
-        nav .value {
-            background-color: transparent;
-            border: none;
-            padding: 10px;
-            color: white;
-            text-decoration: none;
-            font-size: 1.2em;
-            cursor: pointer;
-            border-radius: 4px;
-            transition: background-color 0.3s;
-        }
-        nav .value:hover {
-            background-color: rgba(255, 255, 255, 0.2);
-        }
-
-        /* Gradient Hero Section */
-        .hero {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            height: 100vh;
-            text-align: center;
-            background: black url('media/images/gradient-hero-prerender.avif') no-repeat center center/cover;
-        }
-        .hero h1 {
-            font-family: 'Geist Sans', sans-serif;
-            font-size: 4em;
-            font-weight: bold;
-            margin-bottom: 10px;
-        }
-        .hero p {
-            font-size: 1.2em;
-            max-width: 600px;
-            opacity: 0.9;
-        }
-
-        /* Button Styles */
-        .btn {
-            padding: 12px 24px;
-            font-size: 1.2em;
-            color: black;
-            background-color: white;
-            border: none;
-            border-radius: 8px;
-            text-decoration: none;
-            cursor: pointer;
-            margin: 10px;
-            font-weight: bold;
-            transition: background 0.3s ease, transform 0.2s ease;
-        }
-        .btn:hover {
-            background-color: #f5f5f5;
-            transform: scale(1.05);
-        }
-
-        /* Typing Animation */
-        @keyframes typing {
-            from { width: 0; }
-            to { width: 12%; }
-        }
-        @keyframes blink-caret {
-            from, to { border-color: transparent; }
-            50% { border-color: white; }
+        @keyframes gradient {
+            0% {
+                background-position: 0% 50%;
+            }
+            50% {
+                background-position: 100% 50%;
+            }
+            100% {
+                background-position: 0% 50%;
+            }
         }
     </style>
 </head>
 <body>
 
-    <header>
-        <h1>CST Notes</h1>
-        <nav>
-            <div class="input">
-                <a href="{% url 'notes' %}" class="value">View Notes</a>
-                {% if user.is_authenticated %}
-                    <a href="{% url 'note_upload' %}" class="value">Upload Note</a>
-                    <a href="{% url 'admin:index' %}" class="value">Admin Panel</a>
-                    <a href="{% url 'custom_logout' %}" class="value">Logout</a>
-                {% else %}
-                <a href="{% url 'admin:login' %}?next=/" class="value">Login</a>
-                <a href="{% url 'register' %}" class="value">Register</a>
-                {% endif %}
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-transparent">
+        <div class="container">
+            <a class="navbar-brand" href="{% url 'home' %}">CST Notes</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'notes' %}">View Notes</a>
+                    </li>
+                    {% if user.is_authenticated %}
+                        {% if user.is_staff %}
+                            <li class="nav-item">
+                                <a class="nav-link" href="{% url 'note_upload' %}">Upload Note</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{% url 'admin:index' %}">Admin Panel</a>
+                            </li>
+                        {% endif %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'custom_logout' %}">Logout</a>
+                        </li>
+                    {% else %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'staff_login' %}">Login</a>
+                        </li>
+                    {% endif %}
+                </ul>
             </div>
-        </nav>
-    </header>
+        </div>
+    </nav>
 
-    <!-- Gradient Background Hero Section -->
-    <section class="hero">
-        <h1>Where Knowledge Meets Simplicity!</h1>
-        <p>Built to make you extraordinarily productive. <br>CST Notes is the best way to manage your study materials.</p>
-        <a href="{% url 'notes' %}" class="btn">View Notes</a>
-        {% if user.is_authenticated %}
-            <a href="{% url 'note_upload' %}" class="btn">Upload Note</a>
-        {% else %}
-            <a href="{% url 'register' %}" class="btn">Register</a>
-        {% endif %}
+    <!-- Hero Section -->
+    <section class="py-5 text-center">
+        <div class="container">
+            <h1 class="display-4">Where Knowledge Meets Simplicity!</h1>
+            <p class="lead">Built to make you extraordinarily productive. CST Notes is the best way to manage your study materials.</p>
+            <a href="{% url 'notes' %}" class="btn btn-primary">View Notes</a>
+            <a href="{% url 'chatbot' %}" class="btn btn-info">Ask Me Anything!</a>
+        </div>
     </section>
 
+    <!-- Cards Section -->
+    <section class="py-5">
+        <div class="container">
+            <div class="row justify-content-center">
+                {% for card in card_data %}
+                {% if card.notes %}
+                <div class="col-md-4 mb-4">
+                    <div class="relative flex w-80 flex-col rounded-xl bg-white bg-clip-border text-gray-700 shadow-md">
+                        <div class="relative mx-4 -mt-6 h-40 overflow-hidden rounded-xl bg-blue-gray-500 bg-clip-border text-white shadow-lg shadow-blue-gray-500/40 bg-gradient-to-r from-blue-500 to-blue-600">
+                        </div>
+                        <div class="p-6">
+                            <h5 class="mb-2 block font-sans text-xl font-semibold leading-snug tracking-normal text-blue-gray-900 antialiased">
+                                {{ card.year.1 }} - {{ card.semester.1 }}
+                            </h5>
+                            <p class="block font-sans text-base font-light leading-relaxed text-inherit antialiased">
+                                {% for note in card.notes %}
+                                    - {{ note.title }}<br>
+                                {% endfor %}
+                            </p>
+                        </div>
+                        <div class="p-6 pt-0">
+                            <a href="{% url 'notes' %}?year={{ card.year.0 }}&semester={{ card.semester.0 }}" data-ripple-light="true" type="button" class="select-none rounded-lg bg-blue-500 py-3 px-6 text-center align-middle font-sans text-xs font-bold uppercase text-white shadow-md shadow-blue-500/20 transition-all hover:shadow-lg hover:shadow-blue-500/40 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none">
+                                View Notes
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+                {% endfor %}
+                <!-- Add more cards here -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Bootstrap JavaScript -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

@@ -9,5 +9,6 @@ urlpatterns = [
     path('register/', views.register, name='register'),
     path('staff_login/', views.staff_login, name='staff_login'),
     path('get_subjects/', views.get_subjects, name='get_subjects'),
-    path('logout/', views.custom_logout, name='custom_logout'),  # Add this line
+    path('logout/', views.custom_logout, name='custom_logout'),
+    path('chatbot/', views.chatbot, name='chatbot'),  # Add this line
 ]
