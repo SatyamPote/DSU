@@ -6,36 +6,83 @@
     <title>CST Notes</title>
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Tailwind CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-    <!-- Custom CSS -->
     {% load static %}
     <link rel="stylesheet" href="{% static 'css/home.css' %}">
     <style>
+        /* Dark Theme */
         body {
             color: white;
-            background: linear-gradient(45deg, #e469ae, #369cdd, #d18838, #515395);
-            background-size: 400% 400%;
-            animation: gradient 15s ease infinite;
+            background: #121212;
         }
 
-        @keyframes gradient {
-            0% {
-                background-position: 0% 50%;
-            }
-            50% {
-                background-position: 100% 50%;
-            }
-            100% {
-                background-position: 0% 50%;
-            }
+        .container {
+            padding: 20px;
+        }
+
+        /* Smaller Navbar */
+        .navbar {
+            background-color: #000 !important;
+            max-width: 90%;
+            margin: auto;
+            border-radius: 8px;
+        }
+
+        .navbar-brand, .nav-link {
+            color: white !important;
+        }
+
+        .navbar-toggler {
+            border-color: white;
+        }
+
+        /* Hero Section */
+        .hero-section {
+            text-align: center;
+            padding: 60px 20px;
+            background: #1a1a1a;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.1);
+        }
+
+        .hero-section h1 {
+            font-size: 3rem;
+            color: #ffffff;
+        }
+
+        .hero-section p {
+            font-size: 1.2rem;
+            color: #bbbbbb;
+        }
+
+        .btn-primary, .btn-info {
+            border: none;
+            padding: 12px 20px;
+            border-radius: 5px;
+            color: white;
+            transition: background 0.3s;
+        }
+
+        .btn-primary {
+            background-color: #007bff;
+        }
+
+        .btn-primary:hover {
+            background-color: #0056b3;
+        }
+
+        .btn-info {
+            background-color: #17a2b8;
+        }
+
+        .btn-info:hover {
+            background-color: #117a8b;
         }
     </style>
 </head>
 <body>
 
     <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-transparent">
+    <nav class="navbar navbar-expand-lg navbar-dark">
         <div class="container">
             <a class="navbar-brand" href="{% url 'home' %}">CST Notes</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -69,50 +116,17 @@
     </nav>
 
     <!-- Hero Section -->
-    <section class="py-5 text-center">
+    <section class="hero-section">
         <div class="container">
-            <h1 class="display-4">Where Knowledge Meets Simplicity!</h1>
-            <p class="lead">Built to make you extraordinarily productive. CST Notes is the best way to manage your study materials.</p>
+            <h1>Where Knowledge Meets Simplicity!</h1>
+            <p>CST Notes helps you manage your study materials efficiently.</p>
             <a href="{% url 'notes' %}" class="btn btn-primary">View Notes</a>
             <a href="{% url 'chatbot' %}" class="btn btn-info">Ask Me Anything!</a>
         </div>
     </section>
 
-    <!-- Cards Section -->
-    <section class="py-5">
-        <div class="container">
-            <div class="row justify-content-center">
-                {% for card in card_data %}
-                {% if card.notes %}
-                <div class="col-md-4 mb-4">
-                    <div class="relative flex w-80 flex-col rounded-xl bg-white bg-clip-border text-gray-700 shadow-md">
-                        <div class="relative mx-4 -mt-6 h-40 overflow-hidden rounded-xl bg-blue-gray-500 bg-clip-border text-white shadow-lg shadow-blue-gray-500/40 bg-gradient-to-r from-blue-500 to-blue-600">
-                        </div>
-                        <div class="p-6">
-                            <h5 class="mb-2 block font-sans text-xl font-semibold leading-snug tracking-normal text-blue-gray-900 antialiased">
-                                {{ card.year.1 }} - {{ card.semester.1 }}
-                            </h5>
-                            <p class="block font-sans text-base font-light leading-relaxed text-inherit antialiased">
-                                {% for note in card.notes %}
-                                    - {{ note.title }}<br>
-                                {% endfor %}
-                            </p>
-                        </div>
-                        <div class="p-6 pt-0">
-                            <a href="{% url 'notes' %}?year={{ card.year.0 }}&semester={{ card.semester.0 }}" data-ripple-light="true" type="button" class="select-none rounded-lg bg-blue-500 py-3 px-6 text-center align-middle font-sans text-xs font-bold uppercase text-white shadow-md shadow-blue-500/20 transition-all hover:shadow-lg hover:shadow-blue-500/40 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none">
-                                View Notes
-                            </a>
-                        </div>
-                    </div>
-                </div>
-                {% endif %}
-                {% endfor %}
-                <!-- Add more cards here -->
-            </div>
-        </div>
-    </section>
-
     <!-- Bootstrap JavaScript -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
 </body>
 </html>
