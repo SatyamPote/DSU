@@ -4,9 +4,9 @@ import dj_database_url
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-DEBUG = True  # Important: Set to False in production
+DEBUG = os.environ.get("DEBUG", "False").lower() == "True"  # Important: Set to False in production
 
-ALLOWED_HOSTS = ['127.0.0.1', 'localhost', '*']  # Add 127.0.0.1 and localhost # Split by comma, handle empty string
+ALLOWED_HOSTS = os.environ.get("ALLOWED_HOSTS", "").split(",")  # Add 127.0.0.1 and localhost # Split by comma, handle empty string
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -25,6 +25,7 @@ MIDDLEWARE = [
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'django.contrib.messages.middleware.MessageMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',  # Changed this line
 ]
@@ -56,11 +57,18 @@ WSGI_APPLICATION = 'CST.wsgi.application'
 #    }
 #}
 
+#DATABASES = {
+#    'default': dj_database_url.config(
+#        default='sqlite:///' + str(BASE_DIR / 'db.sqlite3')
+#    )
+#}
+
 DATABASES = {
     'default': dj_database_url.config(
         default='sqlite:///' + str(BASE_DIR / 'db.sqlite3')
     )
 }
+    
 
 AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend',
