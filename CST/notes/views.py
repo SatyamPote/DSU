@@ -13,6 +13,9 @@ from django.http import HttpResponse
 from .models import Note
 from .forms import NoteForm
 
+def health_check(request):
+    return HttpResponse("OK")
+
 def home(request):
     years = Note.YEAR_CHOICES
     semesters = Note.SEMESTER_CHOICES

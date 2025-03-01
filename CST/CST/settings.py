@@ -6,7 +6,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 DEBUG = os.environ.get("DEBUG", "False").lower() == "True"  # Important: Set to False in production
 
-ALLOWED_HOSTS = os.environ.get("ALLOWED_HOSTS", "127.0.0.1,localhost").split(",")  # Split by comma, handle empty string, default to localhost
+ALLOWED_HOSTS = ['*']  # Allow all hosts (for testing only) # Split by comma, handle empty string, default to localhost
 
 # Add 127.0.0.1 and localhost # Split by comma, handle empty string
 
