@@ -1,2 +1,4 @@
 CST/db.sqlite3
-env/
+CST\requirements.txt
+DSU\CST\requirements.txt
+
