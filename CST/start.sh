@@ -1,8 +1,5 @@
 #!/bin/bash
 
-# Change directory to the project root (if needed)
-cd ..  # Remove this line
-
 # Install requirements
 pip install -r requirements.txt
 
