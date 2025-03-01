@@ -7,10 +7,10 @@ cd ..
 pip install -r requirements.txt
 
 # Set the PYTHONPATH to include the project root
-export PYTHONPATH=$PYTHONPATH:/opt/render/project/src
+export PYTHONPATH=/opt/render/project/src:$PYTHONPATH
 
 # Print the PYTHONPATH for debugging
 echo "PYTHONPATH: $PYTHONPATH"
 
 # Run Gunicorn
-gunicorn CST.wsgi
+gunicorn --bind 0.0.0.0:${PORT:-8000} CST.wsgi

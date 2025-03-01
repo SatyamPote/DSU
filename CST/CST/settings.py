@@ -1,5 +1,4 @@
 import os
-import secrets
 from pathlib import Path
 import dj_database_url
 
@@ -7,7 +6,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 DEBUG = os.environ.get("DEBUG", "False").lower() == "True"  # Important: Set to False in production
 
-ALLOWED_HOSTS = os.environ.get("ALLOWED_HOSTS").split(" ")
+ALLOWED_HOSTS = os.environ.get("ALLOWED_HOSTS", "").split(",")  # Split by comma, handle empty string
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -50,16 +49,18 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'CST.wsgi.application'
 
+#DATABASES = {
+#    'default': {
+#        'ENGINE': 'django.db.backends.sqlite3',
+#        'NAME': BASE_DIR / 'db.sqlite3',
+#    }
+#}
+
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
+    'default': dj_database_url.config(
+        default='sqlite:///' + str(BASE_DIR / 'db.sqlite3')
+    )
 }
-
-DATABASES_URL = os.environ.get("DATABASES_URL")
-DATABASES['default'] = dj_database_url.parse("DATABASES_URL")
-
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -95,9 +96,5 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = os.environ.get("SECRET_KEY")
-
-
-
- # Get from environment variable
 
 LOGIN_REDIRECT_URL = '/'
