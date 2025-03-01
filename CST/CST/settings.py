@@ -1,12 +1,13 @@
 import os
 import secrets
 from pathlib import Path
+import dj_database_url
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-DEBUG = True  # Important: Set to False in production
+DEBUG = os.environ.get("DEBUG", "False").lower() == "True"  # Important: Set to False in production
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = os.environ.get("ALLOWED_HOSTS").split(" ")
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -56,6 +57,10 @@ DATABASES = {
     }
 }
 
+DATABASES_URL = os.environ.get("DATABASES_URL")
+DATABASES['default'] = dj_database_url.parse("DATABASES_URL")
+
+
 AUTH_PASSWORD_VALIDATORS = [
     {
         'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
@@ -89,6 +94,10 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', 'your_default_secret_key')  # Get from environment variable
+SECRET_KEY = os.environ.get("SECRET_KEY")
+
+
+
+ # Get from environment variable
 
 LOGIN_REDIRECT_URL = '/'
