@@ -6,9 +6,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 DEBUG = os.environ.get("DEBUG", "False").lower() == "True"  # Important: Set to False in production
 
-ALLOWED_HOSTS = os.environ.get("ALLOWED_HOSTS", "").split(",")  # Add 127.0.0.1 and localhost # Split by comma, handle empty string
+ALLOWED_HOSTS = os.environ.get("ALLOWED_HOSTS", "127.0.0.1,localhost").split(",")  # Split by comma, handle empty string, default to localhost
 
-ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
+# Add 127.0.0.1 and localhost # Split by comma, handle empty string
 
 INSTALLED_APPS = [
     'django.contrib.admin',
