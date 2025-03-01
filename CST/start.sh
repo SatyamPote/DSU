@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Change directory to the project root (if needed)
-cd ..
+cd ..  # Remove this line
 
 # Install requirements
 pip install -r requirements.txt
@@ -13,6 +13,4 @@ export PYTHONPATH=/opt/render/project/src:$PYTHONPATH
 echo "PYTHONPATH: $PYTHONPATH"
 
 # Run Gunicorn
-gunicorn --bind 0.0.0.0:${PORT:-3306} CST.wsgi
-
-export PORT=3306
+gunicorn --bind 0.0.0.0:${PORT:-8000} CST.wsgi
