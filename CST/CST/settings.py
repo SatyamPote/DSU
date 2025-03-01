@@ -8,6 +8,8 @@ DEBUG = os.environ.get("DEBUG", "False").lower() == "True"  # Important: Set to 
 
 ALLOWED_HOSTS = os.environ.get("ALLOWED_HOSTS", "").split(",")  # Add 127.0.0.1 and localhost # Split by comma, handle empty string
 
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
+
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -25,7 +27,6 @@ MIDDLEWARE = [
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
-    'django.contrib.messages.middleware.MessageMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',  # Changed this line
 ]

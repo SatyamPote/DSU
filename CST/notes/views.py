@@ -8,6 +8,7 @@ import wikipedia  # Import the wikipedia library
 from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect, get_object_or_404
+from django.http import HttpResponse
 
 from .models import Note
 from .forms import NoteForm
@@ -98,6 +99,9 @@ def notes_by_criteria(request):
 
 def staff_login(request):
     return redirect('admin:login')  # Redirect to admin login page
+
+def test_view(request):
+    return HttpResponse("Hello, world!")
 
 def get_subjects(request):
     year = request.GET.get('year')
