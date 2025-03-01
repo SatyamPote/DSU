@@ -1,0 +1,179 @@
+@font-face {
+    font-family: 'Geist Sans';
+    src: url('/static/fonts/Geist-Regular.woff2') format('woff2');
+}
+
+@font-face {
+    font-family: 'Geist Mono';
+    src: url('/static/fonts/GeistMono-Regular.woff2') format('woff2');
+}
+
+/* General Styles */
+body {
+    font-family: 'Geist Sans', sans-serif;
+    background-color: #000;
+    color: #fff;
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    width: 90%;
+    max-width: 1200px;
+    margin: auto;
+    text-align: center;
+    padding: 20px;
+}
+
+/* Search Bar */
+.search-form {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+.search-form input {
+    width: 320px;
+    padding: 12px;
+    border: 1px solid transparent;
+    border-image: linear-gradient(45deg, #e469ae, #369cdd, #d18838, #515395);
+    border-image-slice: 1;
+    background-color: #323738;
+    color: #fff;
+    outline: none;
+    font-size: 16px;
+    transition: all 0.2s;
+}
+
+.search-form input:focus {
+    border: 3px solid transparent;
+    border-image: linear-gradient(45deg, #e469ae, #369cdd, #d18838, #515395);
+    border-image-slice: 1;
+    
+}
+
+.search-form button {
+    padding: 12px 18px;
+    margin-left: 12px;
+    border: none;
+    background: linear-gradient(45deg, #e469ae, #369cdd, #d18838, #515395);
+    color: white;
+    border-radius: 10px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.search-form button:hover {
+    transform: scale(1.08);
+    box-shadow: 0 0 12px rgba(228, 105, 174, 0.5);
+}
+
+/* Notes Grid */
+.notes-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
+    gap: 20px;
+    justify-items: center;
+}
+
+/* Note Card */
+.note-card {
+    width: 100%;
+    max-width: 270px;
+    background: #000;
+    border: 2px solid (45deg, #e469ae, #369cdd, #d18838, #515395);
+    border-radius: 16px;
+    padding: 24px;
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
+    transition: all 0.3s ease-in-out;
+    text-align: center;
+}
+
+.note-card:hover {
+    transform: scale(1.06);
+    box-shadow: linear-gradient(45deg, #e469ae, #369cdd, #d18838, #515395);
+}
+
+/* Text Styling */
+.note-title {
+    font-size: 22px;
+    font-weight: bold;
+    background: linear-gradient(45deg, #e469ae, #369cdd, #d18838, #515395);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-family: 'Geist Mono', monospace;
+}
+
+.note-category, 
+.note-tags, 
+.uploaded-by, 
+.download-count {
+    font-size: 14px;
+    color: rgba(255, 255, 255, 0.7);
+    margin: 6px 0;
+}
+
+/* Download Button */
+.download-btn {
+    display: inline-block;
+    margin-top: 12px;
+    padding: 10px 14px;
+    background: linear-gradient(45deg, #e469ae, #369cdd, #d18838, #515395);
+    color: white;
+    border-radius: 10px;
+    font-size: 14px;
+    text-decoration: none;
+    font-weight: 400;
+    transition: all 0.3s;
+}
+
+.download-btn:hover {
+    transform: scale(1.1);
+    box-shadow: 0 0 10px rgba(209, 136, 56, 0.5);
+    font-weight: 100;
+}
+
+/* Action Buttons */
+.actions {
+    margin-top: 30px;
+}
+
+.btn {
+    padding: 12px 18px;
+    text-decoration: none;
+    color: #fff;
+    font-weight: bold;
+    background: linear-gradient(45deg, #e469ae, #369cdd, #d18838, #515395);
+    border-radius: 10px;
+    display: inline-block;
+    transition: all 0.3s;
+    font-size: 16px;
+}
+
+.btn:hover {
+    transform: scale(1.06);
+    box-shadow: 0 0 12px rgba(81, 83, 149, 0.5);
+}
+
+.upload-btn {
+    background: linear-gradient(135deg, #e469ae, #369cdd);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .search-form {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .search-form input {
+        width: 100%;
+        margin-bottom: 12px;
+    }
+
+    .search-form button {
+        width: 100%;
+    }
+}

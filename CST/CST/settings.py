@@ -4,9 +4,9 @@ import dj_database_url
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-DEBUG = os.environ.get("DEBUG", "False").lower() == "True"  # Important: Set to False in production
+DEBUG = True  # Important: Set to False in production
 
-ALLOWED_HOSTS = os.environ.get("ALLOWED_HOSTS", "").split(",")  # Split by comma, handle empty string
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost', '*']  # Add 127.0.0.1 and localhost # Split by comma, handle empty string
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -86,7 +86,7 @@ USE_I18N = True
 USE_TZ = True
 
 STATIC_URL = '/static/'
-STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
+STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]  # Verify this path
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 MEDIA_URL = '/media/'
@@ -95,6 +95,6 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.environ.get("SECRET_KEY")
+SECRET_KEY = 'your_generated_secret_key'  # Replace this
 
-LOGIN_REDIRECT_URL = '/'
+LOGIN_REDIRECT_URL = 'home.html'
