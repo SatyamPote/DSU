@@ -10,6 +10,7 @@ urlpatterns = [
     path('staff_login/', views.staff_login, name='staff_login'),
     path('get_subjects/', views.get_subjects, name='get_subjects'),
     path('logout/', views.custom_logout, name='custom_logout'),
-    path('test/', views.test_view, name='test_view'),
-    path('chatbot/', views.chatbot, name='chatbot'),  # Add this line
+    path('chatbot/', views.chatbot, name='chatbot'),
+    path('download/<int:note_id>/', views.download_note, name='download_note'),
+
 ]

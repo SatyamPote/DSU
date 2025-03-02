@@ -1,15 +1,12 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.forms import UserCreationForm
 from django.urls import reverse
-from django.http import JsonResponse
-import re  # Import the regular expression module
-import wikipedia  # Import the wikipedia library
-from django.contrib.admin.views.decorators import staff_member_required
+from django.http import JsonResponse, HttpResponse
+import re
+import wikipedia
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import render, redirect, get_object_or_404
-from django.http import HttpResponse
-
+from django.db.models import Q
 from .models import Note
 from .forms import NoteForm
 
@@ -23,7 +20,7 @@ def home(request):
 
     for year_choice in years:
         for semester_choice in semesters:
-            notes = Note.objects.filter(year=year_choice[0], semester=semester_choice[0])[:3]  # Get the first 3 notes
+            notes = Note.objects.filter(year=year_choice[0], semester=semester_choice[0])[:3]  # Get first 3 notes
             card_data.append({
                 'year': year_choice,
                 'semester': semester_choice,
@@ -33,7 +30,6 @@ def home(request):
     context = {'card_data': card_data}
     return render(request, 'home.html', context)
 
-#@login_required  # Remove this line if you want everyone to see the notes
 def notes_list(request):
     query = request.GET.get('q')
     year = request.GET.get('year')
@@ -73,19 +69,18 @@ def note_upload(request):
 def download_note(request, note_id):
     note = get_object_or_404(Note, pk=note_id)
     note.increment_download_count()
-    return redirect(note.file.url) # Or serve the file directly
+    return redirect(note.file.url)
 
 def register(request):
     if request.method == 'POST':
         form = UserCreationForm(request.POST)
         if form.is_valid():
-            form.save()
-            return redirect('staff_login')  # Redirect to staff login after registration
-        else:
-            return render(request, 'registration/register.html', {'form': form})
+            user = form.save()
+            login(request, user)  # Auto login after registration
+            return redirect('home')  # Redirect to homepage after registration
     else:
         form = UserCreationForm()
-    return render(request, 'registration/register.html', {'form': form})  # Updated template path
+    return render(request, 'registration/register.html', {'form': form})
 
 def notes_by_criteria(request):
     year = request.GET.get('year')
@@ -101,7 +96,7 @@ def notes_by_criteria(request):
     return render(request, 'notes/notes_by_criteria.html', {'notes': notes, 'year': year, 'semester': semester})
 
 def staff_login(request):
-    return redirect('admin:login')  # Redirect to admin login page
+    return redirect('admin:login')  # Redirect to Django admin login page
 
 def test_view(request):
     return HttpResponse("Hello, world!")
@@ -110,7 +105,6 @@ def get_subjects(request):
     year = request.GET.get('year')
     semester = request.GET.get('semester')
 
-    # Define your subjects based on year and semester
     subjects = {
         '1': {
             '1': ['Mathematics I', 'Physics I', 'Programming I'],
@@ -128,7 +122,6 @@ def get_subjects(request):
             '1': ['Subject 7', 'Subject 8', 'Subject 9'],
             '2': ['Subject 10', 'Subject 11', 'Subject 12'],
         }
-        # Add more years and semesters as needed
     }
 
     if year and semester:
@@ -140,49 +133,48 @@ def get_subjects(request):
 
 def custom_logout(request):
     logout(request)
-    return redirect('home')  # Redirect to the homepage after logout
+    return redirect('home')
 
 def chatbot(request):
     if request.method == 'POST':
         question = request.POST.get('question')
+
         # Load all notes related to computer science
         notes = Note.objects.filter(subject='cs')
         context = ""
+
         for note in notes:
-            # Extract text from the file
             try:
+                note.file.open()  # Open file before reading
                 file_content = note.file.read().decode('utf-8')
+                note.file.close()
                 context += file_content + "\n"
             except Exception as e:
                 context += f"Error reading file {note.title}: {e}"
 
-        # Search for the question in the context
         answer = search_keyword(question, context)
         if "I'm sorry" in answer:
             try:
-                # Search Wikipedia with a more specific query
                 answer = wikipedia.summary(f"{question} computer science", sentences=3)
             except wikipedia.exceptions.PageError:
                 answer = "I'm sorry, I couldn't find information about that topic on Wikipedia either."
             except wikipedia.exceptions.DisambiguationError as e:
                 answer = f"I found multiple pages for that query. Can you be more specific? {e.options}"
+
         return render(request, 'chatbot.html', {'question': question, 'answer': answer})
+    
     return render(request, 'chatbot.html')
 
 def search_keyword(keyword, context, num_sentences=3):
-    # Split the context into sentences
     sentences = re.split(r'(?<!\w\.\w.)(?<![A-Z][a-z]\.)(?<=\.|\?)\s', context)
-    # Find sentences that contain the keyword
     relevant_sentences = [s for s in sentences if keyword.lower() in s.lower()]
+
     if relevant_sentences:
-        # Get the index of the first relevant sentence
         first_index = sentences.index(relevant_sentences[0])
-        # Get a few sentences before and after the first relevant sentence
         start_index = max(0, first_index - num_sentences // 2)
         end_index = min(len(sentences), first_index + num_sentences // 2 + 1)
-        # Combine the sentences
         answer = " ".join(sentences[start_index:end_index])
-        # Format the answer with points
+
         formatted_answer = "<ul>"
         for sentence in answer.split(". "):
             formatted_answer += f"<li>{sentence}.</li>"
