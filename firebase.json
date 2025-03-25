@@ -1,6 +1,6 @@
 {
   "hosting": {
-    "public": "static",
+    "public": "DSU\CST\staticfiles",
     "ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
     "redirects": [
       {
