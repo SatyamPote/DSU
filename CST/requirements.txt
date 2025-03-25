@@ -15,3 +15,6 @@ django-heroku>=0.3.1  # Heroku & Netlify compatibility
 
 # Optional: if you use environment variables
 python-dotenv>=1.0.0
+
+google-cloud-storage
+dj-database-url
