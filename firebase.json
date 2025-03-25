@@ -1,10 +1,13 @@
 {
   "hosting": {
-    "public": "public",
-    "ignore": [
-      "firebase.json",
-      "**/.*",
-      "**/node_modules/**"
+    "public": "static",
+    "ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
+    "redirects": [
+      {
+        "source": "/api/**",
+        "destination": "https://django-app-xxxxx.a.run.app",
+        "type": 301
+      }
     ]
   }
 }
