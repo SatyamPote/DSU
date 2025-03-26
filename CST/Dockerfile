@@ -1,21 +1,20 @@
-# Use official Python image
-FROM python:3.9
+# Use the official Python image from the Docker Hub
+FROM python:3.9-slim
 
 # Set environment variables
-ENV PYTHONUNBUFFERED=1
+ENV PYTHONDONTWRITEBYTECODE 1
+ENV PYTHONUNBUFFERED 1
 
-# Set working directory
-WORKDIR /app
-
-# Copy project files
-COPY . /app/
+# Set work directory
+WORKDIR /code
 
 # Install dependencies
+COPY requirements.txt /code/
 RUN pip install --upgrade pip
 RUN pip install -r requirements.txt
 
-# Expose port 8080 for Cloud Run
-EXPOSE 8080
+# Copy project
+COPY . /code/
 
-# Start Gunicorn server
-CMD ["gunicorn", "--bind", "0.0.0.0:8080", "CST.wsgi:application"]
+# Run the Django server
+CMD ["gunicorn", "--bind", "0.0.0.0:8000", "your_project_name.wsgi:application"]
