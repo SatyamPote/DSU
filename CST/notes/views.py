@@ -30,6 +30,22 @@ database=firebase.database()
 def health_check(request):
     return HttpResponse("OK")
 
+def add_note_to_firebase(request):
+    if request.method == 'POST':
+        title = request.POST.get('title')
+        content = request.POST.get('content')
+        data = {
+            "title": title,
+            "content": content,
+            "user_id": request.session.get('uid')
+        }
+        try:
+            database.child("notes").push(data)
+            return JsonResponse({'message': 'Note added successfully'}, status=200)
+        except Exception as e:
+            return JsonResponse({'error': str(e)}, status=400)
+    return render(request, 'notes/note_upload.html')
+
 def home(request):
     years = Note.YEAR_CHOICES
     semesters = Note.SEMESTER_CHOICES
